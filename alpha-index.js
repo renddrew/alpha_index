@@ -95,16 +95,31 @@ AlphaIndex.prototype.handleLetterClick = function (letter) {
   if (letter === "All") {
     contentElements.forEach((el) => {
       el.style.display = "block";
+      let sibling = el.nextElementSibling;
+      while (sibling && !sibling.matches(this.config.headings.join(", "))) {
+        sibling.style.display = "block";
+        sibling = sibling.nextElementSibling;
+      }
     });
     return;
   }
 
   contentElements.forEach((el) => {
     el.style.display = "none";
+    let sibling = el.nextElementSibling;
+    while (sibling && !sibling.matches(this.config.headings.join(", "))) {
+      sibling.style.display = "none";
+      sibling = sibling.nextElementSibling;
+    }
   });
 
   this.headingsMap[letter].forEach((heading) => {
     heading.style.display = "block";
+    let sibling = heading.nextElementSibling;
+    while (sibling && !sibling.matches(this.config.headings.join(", "))) {
+      sibling.style.display = "block";
+      sibling = sibling.nextElementSibling;
+    }
   });
 
   const targetPosition =
