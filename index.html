@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Breeds</title>
+    <style>
+        #alphIndex-links {
+            position: sticky;
+            top: 200px;
+            z-index: 1000;
+            background-color: #f7f7f7;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        .alphIndex-index a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+        }
+        .alphIndex-index a.active, .alphIndex-index a:hover {
+            font-weight: bold;
+            color: #007BFF;
+        }
+        .alphIndex-index a.inactive {
+            color: #aaa;
+            pointer-events: none;
+        }
+        .content {
+            margin-top: 220px;
+            padding: 20px;
+        }
+        h2, h3, h4 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="alphIndex-links"></div>
+
+<div class="content">
+    <h2>Abyssinian</h2>
+    <p>The Abyssinian is known for its distinctive ticked coat. They are active and playful.</p>
+    <h2>American Bobtail</h2>
+    <p>A breed with a unique bobbed tail, the American Bobtail is playful and intelligent.</p>
+    <h2>Bengal</h2>
+    <p>The Bengal cat has a distinctive spotted coat and is known for its wild appearance.</p>
+    <h3>Birman</h3>
+    <p>Birmans are affectionate and have a silky coat with color-point patterns.</p>
+    <h3>British Shorthair</h3>
+    <p>Known for its round face and dense coat, the British Shorthair is calm and easygoing.</p>
+    <h4>Calico</h4>
+    <p>Calico isn't a breed but a color pattern. Calico cats have a mix of three colors: white, black, and orange.</p>
+    <h4>Cornish Rex</h4>
+    <p>The Cornish Rex is known for its curly coat and playful nature.</p>
+    <h4>Devon Rex</h4>
+    <p>Similar to the Cornish Rex, the Devon Rex has a curly coat but is smaller in size.</p>
+    <h2>Exotic Shorthair</h2>
+    <p>This breed is similar to the Persian but has a short coat. They are calm and affectionate.</p>
+    <h3>Maine Coon</h3>
+    <p>The Maine Coon is one of the largest domesticated cat breeds. They have tufted ears and a bushy tail.</p>
+    <h3>Manx</h3>
+    <p>The Manx is known for its taillessness or having a very short tail.</p>
+    <h2>Norwegian Forest Cat</h2>
+    <p>Originating from Northern Europe, this breed has a thick coat suitable for cold climates.</p>
+    <h3>Oriental</h3>
+    <p>The Oriental breed is closely related to the Siamese and has a sleek appearance.</p>
+    <h2>Persian</h2>
+    <p>Persians are known for their long, silky coats and flat faces. They are calm and enjoy lounging.</p>
+    <h2>Ragdoll</h2>
+    <p>Ragdolls are large, affectionate cats that often go limp when you pick them up, hence the name.</p>
+    <h3>Scottish Fold</h3>
+    <p>Known for its unique folded ears, the Scottish Fold is playful and affectionate.</p>
+    <h2>Sphynx</h2>
+    <p>The Sphynx is a hairless breed known for its wrinkled skin and large ears.</p>
+    <h3>Siamese</h3>
+    <p>Siamese cats are known for their striking blue almond-shaped eyes, short coat, and color-point patterns.</p>
+    <h2>Turkish Angora</h2>
+    <p>Originating from Turkey, this breed has a silky coat and is known for its playful nature.</p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    function alphaListGenerateSlug(str) {
+        return str.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+    }
+
+    let indexDiv = document.createElement('div');
+    indexDiv.classList.add('alphIndex-index');
+
+    const letters = ['All'].concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
+
+    let headingsMap = {};
+
+    const contentElements = document.querySelectorAll('.content h2, .content h3, .content h4');
+    contentElements.forEach(function(heading) {
+        let slug = alphaListGenerateSlug(heading.innerText);
+        heading.id = slug;
+
+        let firstLetter = heading.innerText.charAt(0).toUpperCase();
+        if (!headingsMap[firstLetter]) {
+            headingsMap[firstLetter] = [];
+        }
+        headingsMap[firstLetter].push(heading);
+    });
+
+    function clearActiveClass() {
+        document.querySelectorAll('#alphIndex-links a.active').forEach(el => {
+            el.classList.remove('active');
+        });
+    }
+
+    letters.forEach(function(letter) {
+        let link = document.createElement('a');
+        link.innerText = letter;
+
+        if (letter === 'All') {
+            link.href = `javascript:void(0)`;
+            link.classList.add('active');
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                clearActiveClass();
+                link.classList.add('active');
+                contentElements.forEach(el => {
+                    el.style.display = 'block';
+                    el.nextElementSibling && (el.nextElementSibling.style.display = 'block');
+                });
+            });
+        } else if (headingsMap[letter] && headingsMap[letter].length > 0) {
+            link.href = `javascript:void(0)`;
+            link.classList.add('has-heading'); 
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                clearActiveClass();
+                link.classList.add('active');
+                contentElements.forEach(el => {
+                    el.style.display = 'none';
+                    el.nextElementSibling && (el.nextElementSibling.style.display = 'none');
+                });
+                if (headingsMap[letter] && headingsMap[letter].length > 0) {
+                    headingsMap[letter].forEach(heading => {
+                        heading.style.display = 'block';
+                        let sibling = heading.nextElementSibling;
+                        while (sibling && !sibling.matches('h2, h3, h4')) {
+                            sibling.style.display = 'block';
+                            sibling = sibling.nextElementSibling;
+                        }
+                    });
+                    const targetPosition = headingsMap[letter][0].getBoundingClientRect().top + window.pageYOffset - 200;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
+        } else {
+            link.href = 'javascript:void(0)';
+            link.classList.add('inactive');
+            link.style.pointerEvents = 'none';
+        }
+
+        indexDiv.appendChild(link);
+    });
+
+    let targetElement = document.querySelector('#alphIndex-links');
+    if (targetElement) {
+        targetElement.appendChild(indexDiv);
+    }
+});
+</script>
+</body>
+</html>
