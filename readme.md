@@ -1,8 +1,13 @@
 # Alpha Index Page Scroll
 
+
 ## Overview
 
 Code that provides a dynamic way to index and scroll through webpage content based on alphabetic categorization of headings. When users click on a particular letter in the index, the page will smoothly scroll to sections whose headings start with that letter.
+
+## Demo
+
+Check out the live demo of the project here: [Demo](https://renddrew.github.io/alpha_index/)
 
 ## Features
 
