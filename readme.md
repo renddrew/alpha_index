@@ -19,20 +19,35 @@ Check out the live demo of the project here: [Demo](https://renddrew.github.io/a
 
 4. **Smooth Scrolling**: When you click on a letter with associated content, the page smoothly scrolls to the first section with a heading that starts with that letter.
 
-## Usage
+## How to Use
 
-To integrate this functionality into your project:
+To integrate the `AlphaIndex` function into your webpage, follow these steps:
 
-1. **HTML Structure**:
-    - Make sure your content is wrapped inside a `div` with the class `.content`.
-    - Headings within the content div (`h2`, `h3`, `h4`) will be used to generate the alphabetic index.
+1. **Include the JavaScript**: Ensure that the necessary JavaScript code (including the `AlphaIndex` function definition) is either linked or embedded in your HTML.
 
-2. **CSS**: The provided styles manage the appearance and positioning of the header, alphabetic index, and content. Adjust the styles to fit the look and feel of your project.
+2. **Initialize the Function**: Add the following script to initialize the `AlphaIndex` function once your content has loaded:
 
-3. **JavaScript**:
-    - The script generates the alphabetic index by scanning all the headings inside the content div.
-    - Click events on the index letters filter the visible content based on the chosen letter.
-    - The 'All' option in the index will display all content sections.
+    ```javascript
+    <script>
+        // Usage
+        document.addEventListener("DOMContentLoaded", function () {
+          new AlphaIndex({
+            contentSelector: ".content",
+            headings: ["h2", "h3", "h4"],
+            indexTargetSelector: "#alphIndex-links",
+            offsetHeight: 190, // Example offset height for a fixed header
+          });
+        });
+    </script>
+    ```
+
+3. **Customize**: You can customize the behavior of the `AlphaIndex` function by modifying the parameters:
+
+   - `contentSelector`: The CSS selector of the content to index.
+   - `headings`: An array of heading elements (like "h2", "h3", etc.) to be indexed.
+   - `indexTargetSelector`: The CSS selector of the container where the generated index should be inserted.
+   - `offsetHeight`: The offset from the top of the viewport (useful if you have fixed headers or other elements at the top of the page).
+
 
 ## How It Works
 
